@@ -17,7 +17,7 @@ function App() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-[100vh]">
       <Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
       <div className="flex-1">{renderPage()}</div>
     </div>

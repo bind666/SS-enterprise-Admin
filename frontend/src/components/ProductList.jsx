@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../config/config";
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
@@ -9,7 +10,7 @@ export default function ProductList() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:5000/api/products");
+        const res = await fetch(`${API_BASE_URL}/products`);
         if (!res.ok) throw new Error("Failed to fetch products");
         const data = await res.json();
         setProducts(data.products || []);
@@ -35,8 +36,10 @@ export default function ProductList() {
     );
 
   return (
-    <div className="p-5 bg-gray-900 min-h-screen">
-      <h1 className="text-3xl font-bold mb-5 text-white">My Products</h1>
+    <div className="p-5 bg-gray-900 h-screen overflow-y-auto">
+      <h1 className="text-3xl font-bold mb-5 text-white sticky top-0 bg-gray-900 z-10 py-2">
+        My Products
+      </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {products.map((p) => (
           <motion.div

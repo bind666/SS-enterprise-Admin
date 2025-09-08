@@ -116,6 +116,7 @@
 // }
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { API_BASE_URL, CLOUDINARY_UPLOAD_URL } from "../config/config";
 
 export default function ProductForm() {
   const [name, setName] = useState("");
@@ -140,10 +141,10 @@ export default function ProductForm() {
       formData.append("upload_preset", "ss-products"); // unsigned preset
       formData.append("folder", "ss-products");
 
-      const cloudRes = await fetch(
-        "https://api.cloudinary.com/v1_1/dmljreejl/image/upload",
-        { method: "POST", body: formData }
-      );
+      const cloudRes = await fetch(CLOUDINARY_UPLOAD_URL, {
+        method: "POST",
+        body: formData,
+      });
 
       const cloudData = await cloudRes.json();
       if (!cloudRes.ok)
@@ -157,7 +158,7 @@ export default function ProductForm() {
       const slug = name.trim().toLowerCase().replace(/\s+/g, "-");
 
       // 4️⃣ Post product info to backend
-      const res = await fetch("http://127.0.0.1:5000/api/products", {
+      const res = await fetch(`${API_BASE_URL}/products`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, slug, category, price, image: imageUrl }),
@@ -222,9 +223,8 @@ export default function ProductForm() {
       </form>
       {message && (
         <motion.p
-          className={`mt-3 ${
-            message.startsWith("✅") ? "text-green-400" : "text-red-400"
-          }`}
+          className={`mt-3 ${message.startsWith("✅") ? "text-green-400" : "text-red-400"
+            }`}
         >
           {message}
         </motion.p>
